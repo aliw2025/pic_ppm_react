@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap/dist/js/bootstrap.bundle';
 import { Inter } from "next/font/google";
 import SideBar from "./componenets/sidebar";
+// import useEffect from
 import 'font-awesome/css/font-awesome.min.css';
 
 
@@ -15,6 +16,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en">
       <body>

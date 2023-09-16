@@ -29,6 +29,9 @@ console.log(pathname==='/about'?"active":"");
         <li className="nav-item">    
             <Link  className={"nav-link text-light "+(pathname=='/about'?"active":"")}  href="/about">About</Link>
         </li>
+        <li className="nav-item">    
+            <Link  className={"nav-link text-light "+(pathname=='/assets'?"active":"")}  href="/assets">Assets</Link>
+        </li>
        
         
       </ul>
