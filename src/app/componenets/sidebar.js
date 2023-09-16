@@ -1,10 +1,13 @@
-"use  client";
+"use client"
 
 import React from "react";
 import Link from "next/link"; // Import the Link component
+import { usePathname } from 'next/navigation'
+
 
 const SideBar = () => {
-    
+  const pathname = usePathname()
+console.log(pathname==='/about'?"active":"");
   return (
     <div
       style={{ height: "100vh" }}
@@ -15,27 +18,19 @@ const SideBar = () => {
         className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
       >
         {/* <svg className="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg> */}
-        <span className="fs-4">Sidebar</span>
+        <span className="fs-4 px-4 "> Sidebar</span>
       </a>
       <hr></hr>
       <ul className="nav nav-pills flex-column mb-auto">
       <li>
-        <Link  className="nav-link "href="/">Dashboard</Link>
+        <Link  className={"nav-link text-light "+(pathname=='/'?"active":"")}  href="/">Vendors</Link>
         </li>
 
         <li className="nav-item">    
-            <Link  className="nav-link active"href="/about">About</Link>
+            <Link  className={"nav-link text-light "+(pathname=='/about'?"active":"")}  href="/about">About</Link>
         </li>
        
-        <li>
-        <Link  className="nav-link "href="/orders">Orders</Link>
-        </li>
-        <li>
-        <Link  className="nav-link "href="/products">Products</Link>
-        </li>
-        <li>
-        <Link  className="nav-link "href="/customers">Customers</Link>
-        </li>
+        
       </ul>
       {/* <hr></hr> */}
       <div className="dropdown">

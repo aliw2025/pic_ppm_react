@@ -1,8 +1,11 @@
 import "./globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle';
 import { Inter } from "next/font/google";
 import SideBar from "./componenets/sidebar";
+import 'font-awesome/css/font-awesome.min.css';
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +23,16 @@ export default function RootLayout({ children }) {
           className="flex flex-column flex-shrink-0"
         >
           <div className="row">
-            <div className="col-3 p-0">
+            <div className="col-2 p-0">
               <SideBar></SideBar>
             </div>
-            <div className="bg-light col-9">{children}</div>
+            <div  style={{backgroundColor:'#F8F8F8'}} className=" col-10 p-0">
+              <div className="p-0 m-0 bg-dark text-light mx-4 my-4 d-flex justify-content-end align-items-center" style={{height:"70px",borderRadius:'10px'}}>
+              <i className="fa fa-heart mx-2"></i>
+
+              </div>
+              {children}
+              </div>
           </div>
         </div>
       </body>
