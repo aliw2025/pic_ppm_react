@@ -3,40 +3,29 @@ import axios from 'axios';
 
 export default function VendorTable(props) {
 
-  const [data,setData] = useState();
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://localhost/pic_ppm_api/api/Vendor');
-      setData(response.data.data);
-     
-    } catch (error) {
-      console.error('Error fetching data:', error);
+
+  const [data,setData]= useState(null)
+
+  useEffect(()=>{
+    
+    if(props.data){
+      console.log("this is props data");
+      console.log(props.data);
+      setData(props.data);
     }
-  };
+  },[props.data]);
+
+  function onDelete(id) {
+
+    props.onDelete(id);
+
+  }
+
+  function onEdit(id) { 
+    props.onEdit(id);
+  }
   
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    console.log('Data updated:', data);
-  }, [data])
- 
-
-  // console.log(props);
-
-  // const [data,setData]= useState(null)
-
-  // useEffect(()=>{
-
-  //   if(props.data){
-  //     console.log("this is props data");
-  //     console.log(props.data);
-  //     setData(props.data);
-  //   }
-  // },[props.data]);
-
-  // var data = props.data;  
   return  (
     <table className="table  table-striped table-bordered  ">
       <thead>
@@ -50,7 +39,7 @@ export default function VendorTable(props) {
       </thead>
       <tbody>
         { data!=null? data.map((vendorData, index) => {
-         return <VendorRow key={index} {...vendorData} />;
+         return <VendorRow onDelete={onDelete} onEdit={onEdit} key={index} {...vendorData} />;
         }): ""}
       </tbody>
     </table>
@@ -58,6 +47,19 @@ export default function VendorTable(props) {
 }
 
 function VendorRow(rowData) {
+
+  console.log(rowData);
+  function handleEdit(id){
+
+    console.log("editing: "+id);
+     rowData.onEdit(id);
+
+  }
+
+  function handleDelete(id){
+    console.log("deleting: "+id);
+    rowData.onDelete(id);
+  }
 
   return (
     <tr>
@@ -67,8 +69,8 @@ function VendorRow(rowData) {
       <td>{rowData.address}</td>
       <td>
         <i className="fa fa-eye mx-2"></i>
-        <i className="fa fa-edit mx-2"></i>
-        <i className="fa fa-trash mx-2"></i>
+        <i className="fa fa-edit mx-2" onClick={()=> { handleEdit(rowData.id) }  }></i>
+        <i className="fa fa-trash mx-2"onClick={()=>{ handleDelete(rowData.id)}} ></i>
       </td>
     </tr>
   );
