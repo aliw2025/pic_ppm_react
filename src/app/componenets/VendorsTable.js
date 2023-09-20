@@ -1,20 +1,24 @@
 import React from "react";
-export default function VendorTable() {
-  var data = [
-    {
-      id: 1,
-      name: "apex",
-      buisnessName: "apex Trd",
-      address: "university Road",
-    },
-    {
-      id: 2,
-      name: "flex",
-      buisnessName: "flex Trd",
-      address: "university Road",
-    },
-  ];
+export default function VendorTable(props) {
 
+  // var data = [
+  //   {
+  //     id: 1,
+  //     name: "apex",
+  //     buisnessName: "apex Trd",
+  //     address: "university Road",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "flex",
+  //     buisnessName: "flex Trd",
+  //     address: "university Road",
+  //   },
+  // ];
+
+  console.log(props);
+  var data = props.data;
+  
   return (
     <table className="table  table-striped table-bordered  ">
       <thead>

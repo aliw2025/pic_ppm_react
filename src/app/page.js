@@ -1,14 +1,33 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link"; // Import the Link component
 import VendorTable from "./componenets/VendorsTable"; 
+import axios from 'axios';
 
 export default function Home() {
   const [count, setCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [data,setData] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost/pic_ppm_api/api/Vendor');
+        console.log(response.data);
+        setData(response.data);
+       
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log('Data updated:', data);
+  }, [data])
   var c = 0;
   function Click() {
     console.log("i am clicked");
@@ -78,7 +97,7 @@ export default function Home() {
               </tr>
             </tbody>
           </table> */}
-          <VendorTable></VendorTable>
+          <VendorTable data={data} > </VendorTable>
         </div>
       </div>
 
