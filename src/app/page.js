@@ -7,42 +7,51 @@ import VendorTable from "./componenets/VendorsTable";
 import axios from 'axios';
 
 export default function Home() {
-  const [count, setCount] = useState(0);
+  
   const [showModal, setShowModal] = useState(false);
-  const [data,setData] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost/pic_ppm_api/api/Vendor');
-        console.log(response.data);
-        setData(response.data);
-       
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    console.log('Data updated:', data);
-  }, [data])
-  var c = 0;
-  function Click() {
-    console.log("i am clicked");
-    setCount(count + 1);
-    c = c + 1;
-    // count =
-  }
-
+ 
   function handleShowModal() {
-    console.log("settig true");
+    
     setShowModal(true);
   }
   function handHideModel() {
     setShowModal(false);
   }
+
+
+  const [vendorData, setVendorData] = useState({
+    vendor_name: "",
+    business_name: "",
+    address: "",
+  });
+
+  const handleInputChange = (e) => {
+    console.log(e.target);
+    const { name, value } = e.target;
+    setVendorData({ ...vendorData, [name]: value });
+  };
+
+  const handleSave = () => {
+    // Make the API POST request to store the vendor
+    axios.post("http://localhost/pic_ppm_api/api/Vendor", vendorData)
+      .then(response => {
+        // Handle success
+        console.log("Vendor saved successfully:", response.data);
+        setVendorData({ vendor_name: "",
+        business_name: "",
+        address: ""});
+        handHideModel();
+        // vendorTable.fetchData();
+        //fetchData();
+
+      })
+      .catch(error => {
+        // Handle error
+        console.error("Error saving vendor:", error);
+      });
+  };
+  // const vendorTable = React.useRef();
+
 
   return (
     <div className=" mt-2 text-dark mx-4 ">
@@ -54,50 +63,7 @@ export default function Home() {
           </button>
         </div>
         <div className="card-body">
-          {/* <table className="table  table-striped table-bordered  ">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Buisness Name</th>
-                <th>Address</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Apex</td>
-                <td>Apex Trd</td>
-                <td>University Road</td>
-                <td>
-                  {" "}
-                  <i className="fa fa-eye mx-2"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Apex</td>
-                <td>Apex Trd</td>
-                <td>University Road</td>
-                <td>
-                  {" "}
-                  <i className="fa fa-eye mx-2"></i>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Apex</td>
-                <td>Apex Trd</td>
-                <td>University Road</td>
-                <td>
-                  {" "}
-                  <i className="fa fa-eye mx-2"></i>
-                </td>
-              </tr>
-            </tbody>
-          </table> */}
-          <VendorTable data={data} > </VendorTable>
+          <VendorTable  > </VendorTable>
         </div>
       </div>
 
@@ -119,24 +85,29 @@ export default function Home() {
           <div className="card-body row">
             <div className="col-6">
               <label className="form-label"> Name</label>
-              <input placeholder="Name" className="form-control"></input>
+              <input name="vendor_name" value={vendorData.vendor_name} placeholder="Name" className="form-control" onChange={handleInputChange} ></input>
             </div>
             <div className="col-6">
-              <label className="form-label">Business Name</label>
+              <label  className="form-label"  >Business Name</label>
               <input
+              value={vendorData.business_name}
                 placeholder="Business Name"
                 className="form-control"
+                name="business_name"
+                onChange={handleInputChange}
               ></input>
             </div>
             <div className="col-12 mt-2">
               <label className="form-label">Address</label>
               <textarea
-               
+               value={vendorData.address}
+               name="address"
+               onChange={handleInputChange}
                 className="form-control"
               ></textarea>
             </div>
             <div className="col-12 d-flex justify-content-center">
-              <button className="my-4 btn btn-primary me-2">Save </button>
+              <button className="my-4 btn btn-primary me-2" onClick={handleSave} >Save </button>
               <button className="my-4 btn btn-secondary" onClick={handHideModel} >Cancel </button>
             </div>
           </div>
