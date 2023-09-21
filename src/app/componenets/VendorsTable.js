@@ -5,7 +5,6 @@ export default function VendorTable(props) {
 
 
   const [data,setData]= useState(null)
-
   useEffect(()=>{
     
     if(props.data){
@@ -14,6 +13,7 @@ export default function VendorTable(props) {
       setData(props.data);
     }
   },[props.data]);
+
 
   function onDelete(id) {
 
@@ -39,7 +39,7 @@ export default function VendorTable(props) {
       </thead>
       <tbody>
         { data!=null? data.map((vendorData, index) => {
-         return <VendorRow onDetail={()=>{props.onDetail}} onDelete={onDelete} onEdit={onEdit} key={index} {...vendorData} />;
+         return <VendorRow onDetail={props.onDetail} onDelete={onDelete} onEdit={onEdit} key={index} {...vendorData} />;
         }): ""}
       </tbody>
     </table>
