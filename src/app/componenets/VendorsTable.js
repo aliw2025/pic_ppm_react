@@ -39,7 +39,7 @@ export default function VendorTable(props) {
       </thead>
       <tbody>
         { data!=null? data.map((vendorData, index) => {
-         return <VendorRow onDelete={onDelete} onEdit={onEdit} key={index} {...vendorData} />;
+         return <VendorRow onDetail={()=>{props.onDetail}} onDelete={onDelete} onEdit={onEdit} key={index} {...vendorData} />;
         }): ""}
       </tbody>
     </table>
@@ -48,7 +48,7 @@ export default function VendorTable(props) {
 
 function VendorRow(rowData) {
 
-  console.log(rowData);
+  
   function handleEdit(id){
 
     console.log("editing: "+id);
@@ -68,7 +68,7 @@ function VendorRow(rowData) {
       <td>{rowData.business_name}</td>
       <td>{rowData.address}</td>
       <td>
-        <i className="fa fa-eye mx-2"></i>
+        <i className="fa fa-eye mx-2"onClick={()=>{ console.log('eye'); rowData.onDetail(rowData.id)}} ></i>
         <i className="fa fa-edit mx-2" onClick={()=> { handleEdit(rowData.id) }  }></i>
         <i className="fa fa-trash mx-2"onClick={()=>{ handleDelete(rowData.id)}} ></i>
       </td>
