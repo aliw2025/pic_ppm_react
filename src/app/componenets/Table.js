@@ -1,3 +1,4 @@
+import { data } from "jquery";
 import React from "react";
 import { useState,useEffect } from "react";
 
@@ -21,15 +22,16 @@ export default function Table({columnNames,aliases, tableData}) {
   //     address: "university Road",
   //   },
   // ];
-  const [data,setData]= useState(null)
-  useEffect(()=>{
+  // const [data,setData]= useState(null)
+  // useEffect(()=>{
     
-    if(tableData){
-      console.log("this is props data");
-      console.log(tableData);
-      setData(tableData);
-    }
-  },[tableData]);
+  //   if(tableData){
+  //     console.log("this is props data");
+  //     console.log(tableData);
+  //     setData(tableData);
+  //   }
+  // },[tableData]);
+  var data = tableData;
 
   return (
     <table className="table  table-striped table-bordered  ">
