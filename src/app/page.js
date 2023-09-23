@@ -5,36 +5,51 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link"; // Import the Link component
 import VendorTable from "./componenets/VendorsTable";
 import axios from "axios";
+import Table from "./componenets/Table";
 
 export default function Home() {
+  // to handle the add and update vendor model
   const [showModal, setShowModal] = useState(false);
+  // to handle the show vendor detail modal
   const [showVDetail, setShowVdetail] = useState(false);
-
-  const [data, setData] = useState();
-
+  // to hanlde the contact form in vendor detail
+  const [showContact, setShowContact] = useState(false);
+  // vendors form action
   const [formAction, setFormAction] = useState("save");
-
+   // all vendors data
+   const [data, setData] = useState();
+  // single vendor data
   const [vendorData, setVendorData] = useState({
     vendor_name: "",
     business_name: "",
     address: "",
   });
 
-  function handleShowModal(action) {
-    setShowModal(true);
-    setFormAction(action);
-  }
+  // all vendor contacts
+  const [vcontacts, setVcontacts] = useState();
+  //  single vendor cantact data
+  const [vendorContact, setVendorContact] = useState({
+    name: "",
+    designation: "",
+    mobile: "",
+    vendor: vendorData.id,
+  });
 
-  function handHideModel() {
-    setVendorData({ vendor_name: "", business_name: "", address: "" });
-    setShowModal(false);
-  }
 
+  // handle vendor form change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setVendorData({ ...vendorData, [name]: value });
   };
 
+  // handle vendor form change
+  const handleContactInputChange = (e) => {
+    const { name, value } = e.target;
+    setVendorContact({ ...vendorContact, [name]:  value });
+  };
+
+
+  // vendors
   const getVendors = async () => {
     try {
       const response = await axios.get(
@@ -114,6 +129,26 @@ export default function Home() {
     }
   };
 
+  // contact apis
+  const handleSaveContact = () => {
+    // Make the API POST request to store the vendor
+    vendorContact.vendor = vendorData.id;
+    axios
+      .post("http://localhost/pic_ppm_api/api/Vendor/store-contact-person", vendorContact)
+      .then((response) => {
+        // Handle success
+        console.log("Vendor saved successfully:", response.data);
+        handleHideContact();
+        handleGetVendor(vendorContact.vendor);
+        
+        
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error saving vendor:", error);
+      });
+  };
+
   function onDelete(id) {
     handleDelete(id);
   }
@@ -122,14 +157,46 @@ export default function Home() {
     handleGetVendor(id);
     handleShowModal("update");
   }
+
+  // show and hide section
+
+  function handleShowModal(action) {
+    setShowModal(true);
+    setFormAction(action);
+  }
+
+  function handHideModel() {
+    setVendorData({ vendor_name: "", business_name: "", address: "" });
+    setShowModal(false);
+  }
+
   function handleDetail(id) {
-    console.log("i am king");
+    // opening the contact form in closed state
+    setShowContact(false);
     handleGetVendor(id);
     setShowVdetail(true);
   }
+
   function handleDetailClose() {
     setVendorData({ vendor_name: "", business_name: "", address: "" });
     setShowVdetail(false);
+  }
+
+  function handleContactShow() {
+    
+    setShowContact(true);
+  }
+
+  function handleHideContact() {
+
+    setVendorContact( {
+      name: "",
+      designation: "",
+      mobile: "",
+      vendor: vendorData.id,
+    });
+   
+    setShowContact(false);
   }
 
   return (
@@ -245,6 +312,55 @@ export default function Home() {
               <span style={{ fontStyle: "bold" }}>Address :</span>{" "}
               {vendorData.address}
             </p>
+            <div className="d-flex justify-content-end my-2">
+              <button className="btn btn-primary" onClick={handleContactShow}>
+                Add Contact{" "}
+              </button>
+            </div>
+            {showContact && (
+              <div className="card">
+                <div className="row card-body">
+                  <div className="col-4">
+                    <input
+                      value={vendorContact.name}
+                      placeholder="name"
+                      className="form-control"
+                      name="name"
+                      onChange={handleContactInputChange}
+                    ></input>
+                  </div>
+                  <div className="col-4">
+                    <input
+                      value={vendorContact.designation} 
+                      placeholder="Designation"
+                      className="form-control"
+                      name="designation"
+                      onChange={handleContactInputChange}
+                    ></input>
+                  </div>
+                  <div className="col-4">
+                    <input
+                      value={vendorContact.mobile}
+                      placeholder="Contact"
+                      className="form-control"
+                      name="mobile"
+                      onChange={handleContactInputChange}
+                    ></input>
+                  </div>
+                  <div className="col-12 d-flex justify-content-center mt-4">
+                    <button className="btn btn-primary me-2" onClick={handleSaveContact} >Save</button>
+                    <button
+                      className="btn btn-secondary me-2"
+                      onClick={handleHideContact}
+                    >
+                      cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <h4 className="my-4"> Contacts </h4>
+            <Table columnNames={["name","designation","mobile"]} aliases={["name","designation","mobile"]} tableData={vendorData.contacts}  ></Table>
           </div>
         </div>
       )}
