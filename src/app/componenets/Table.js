@@ -4,7 +4,6 @@ import { useState,useEffect } from "react";
 
 export default function Table({columnNames,aliases, tableData}) {
 
-
   //  columnNames = ["id", "name",  "buisnessName", "address"];
   //  aliases = ["id", "name",  "buisness Name", "address"];
 
