@@ -1,9 +1,31 @@
 "use client";
-import react from "react";
+import react, { useEffect } from "react";
 import Table from "../../componenets/Table";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'
+import axios from "axios";
+
 export default function Assets() {
+console.log("ddcfdf");
+
+  useEffect(()=>{
+
+    function getFormData(){
+     
+        axios.get("http://localhost/pic_ppm_api/api/Asset/create")
+      .then((response)=>{
+        console.log("this is reponse"+response);
+
+      }).catch((error)=>{
+        console.log(error);
+      })
+
+      
+    }
+
+    getFormData();
+
+  },[])
 
   var router = useRouter();
 
@@ -95,119 +117,119 @@ export default function Assets() {
                 </div>
                 <button type="submit">Submit</button>
               </form> */}
-              <div class="row">
-                <div class="col-4">
-                  <label class="mt-1 form-label">
+              <div className="row">
+                <div className="col-4">
+                  <label className="mt-1 form-label">
                     Asset Technical Category{" "}
                   </label>
                   <select
                     name="asset_tech_cat"
                     id=""
-                    class="form-control"
+                    className="form-control"
                   ></select>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Equipment Category Name</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Equipment Category Name</label>
                   <input
                     name="equipment_category_name"
                     placeholder="Name"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Equipment Type</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Equipment Type</label>
                   <input
                     name="equipment_type"
                     placeholder="Equipment Type"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Manufacturer</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Manufacturer</label>
                   <input
                     name="manufacturer"
                     placeholder="Manufacturer"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Model</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Model</label>
                   <input
                     name="model"
                     placeholder="Model"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Serial number</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Serial number</label>
                   <input
                     name="serial_number"
                     placeholder="Serial number"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">FA #</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">FA #</label>
                   <input
                     name="fa_number"
                     placeholder="FA #"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label">Equipment Sequence #</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label">Equipment Sequence #</label>
                   <input
                     name="equipment_seq_number"
                     placeholder="Equipment Sequence #"
                     type="text"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label"> Manufacture Date</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label"> Manufacture Date</label>
                   <input
                     name="manufacture_date"
                     placeholder="Manufacture Date"
                     type="date"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label"> Installation Date</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label"> Installation Date</label>
                   <input
                     name="installation_date"
                     placeholder=" Installation Date"
                     type="date"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label"> Status</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label"> Status</label>
                   <select
                     name="asset_status"
                     id=""
-                    class="form-control"
+                    className="form-control"
                   ></select>
                 </div>
-                <div class="col-4">
-                  <label for="" class="mt-1 forml-label">
+                <div className="col-4">
+                  <label  className="mt-1 forml-label">
                     Vendor
                   </label>
-                  <select name="vendor" id="" class="form-control"></select>
+                  <select name="vendor" id="" className="form-control"></select>
                 </div>
-                <div class="col-4">
-                  <label class="mt-1 form-label"> Manual</label>
+                <div className="col-4">
+                  <label className="mt-1 form-label"> Manual</label>
                   <input
                     name="file_name"
                     placeholder="Attach Manual"
                     type="file"
-                    class="form-control"
+                    className="form-control"
                   ></input>
                 </div>
               </div>
