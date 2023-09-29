@@ -30,7 +30,7 @@ console.log(pathname==='/about'?"active":"");
             <Link  className={"nav-link text-light "+(pathname=='/about'?"active":"")}  href="/about">About</Link>
         </li>
         <li className="nav-item">    
-            <Link  className={"nav-link text-light "+(pathname=='/assets/asset-list'?"active":"")}  href="/assets/asset-list">Assets</Link>
+        <Link className={"nav-link text-light " + (pathname.startsWith('/assets') ? "active" : "")} href="/assets/asset-list">Assets</Link>
         </li>
        
         

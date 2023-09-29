@@ -2,7 +2,11 @@
 import react from "react";
 import Table from "../../componenets/Table";
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 export default function Assets() {
+
+  var router = useRouter();
+
   var asset = [];
   var assets = [];
   var departments = [];
@@ -52,7 +56,7 @@ export default function Assets() {
               </div>
               <div >
                 <button className="btn btn-primary me-2"> Save  </button>
-                <button className="btn btn-secondary"> Reset  </button>
+                <button className="btn btn-secondary" onClick={()=>{ router.back();}} > Cancel  </button>
 
               </div>
               
