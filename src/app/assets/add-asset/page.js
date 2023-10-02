@@ -5,10 +5,19 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'
 import axios from "axios";
 import { data } from "jquery";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { RingLoader } from 'react-spinners';
+
+
+
 
 export default function Assets() {
 console.log("ddcfdf");
 var router = useRouter();
+
+const [loading, setLoading] = useState(false);
 
   var asset = [];
   var assets = [];
@@ -17,10 +26,13 @@ var router = useRouter();
   const [blocks,setBlocks] = useState([]);
   const [floors,setFloors] = useState([]);
 
+
+
   useEffect(()=>{
 
     function getFormData(){
-     
+      setLoading(true); // Set loading to true when starting the request
+
         axios.get("http://localhost/pic_ppm_api/api/Asset/create")
       .then((response)=>{
         console.log("this is reponse"+response);
@@ -32,6 +44,9 @@ var router = useRouter();
         console.log(departments);
       }).catch((error)=>{
         console.log(error);
+      }).finally(()=>{
+        setLoading(false); // Set loading to true when starting the request
+
       })
 
       
@@ -87,12 +102,19 @@ var router = useRouter();
         'Content-Type': 'multipart/form-data'
       }});
       console.log("asset create:", response.data);
+      toast.success('Record Saved');
     } catch (error) {
       console.error("Error creating contact:", error);
+    }finally {
+
+      setLoading(false); // Set loading to true when starting the request
+
     }
   };
   return (
     <div className="bg-light text-dark ">
+            {loading && <RingLoader className="spinner" size={150} color={'#36D7B7'} loading={loading} />}
+
       <div className="row">
         <link href="/"></link>
         <div className="col-12">
@@ -104,7 +126,6 @@ var router = useRouter();
               <div >
                 <button className="btn btn-primary me-2" onClick={()=>{ handleSubmit(); }}> Save  </button>
                 <button className="btn btn-secondary" onClick={()=>{ router.back();}} > Cancel  </button>
-
               </div>
               
             </div>
@@ -416,6 +437,7 @@ var router = useRouter();
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
