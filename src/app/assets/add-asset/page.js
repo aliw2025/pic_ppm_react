@@ -4,9 +4,18 @@ import Table from "../../componenets/Table";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'
 import axios from "axios";
+import { data } from "jquery";
 
 export default function Assets() {
 console.log("ddcfdf");
+var router = useRouter();
+
+  var asset = [];
+  var assets = [];
+  const[departments,setDepartments]  = useState([]);
+  const[vendors,setVendors] = useState([]);
+  const [blocks,setBlocks] = useState([]);
+  const [floors,setFloors] = useState([]);
 
   useEffect(()=>{
 
@@ -15,7 +24,12 @@ console.log("ddcfdf");
         axios.get("http://localhost/pic_ppm_api/api/Asset/create")
       .then((response)=>{
         console.log("this is reponse"+response);
-
+        console.log(response.data);
+        setFloors(response.data.floors);       
+        setDepartments(response.data.departments); 
+        setVendors(response.data.vendors);
+        setBlocks(response.data.blocks);
+        console.log(departments);
       }).catch((error)=>{
         console.log(error);
       })
@@ -27,19 +41,32 @@ console.log("ddcfdf");
 
   },[])
 
-  var router = useRouter();
-
-  var asset = [];
-  var assets = [];
-  var departments = [];
-  var floors = [];
-  var blocks = [];
+  
 
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    phone: "",
-    file: null,
+    asset_tech_cat: '',
+    equipment_category_name: '',
+    equipment_type: '',
+    manufacturer: '',
+    model: '',
+    serial_number: '',
+    fa_number: '',
+    equipment_seq_number: '',
+    manufacture_date: '',
+    installation_date: '',
+    asset_status: '',
+    vendor: '',
+    file_name: '',
+    building_block: '',
+    floor: '',
+    department: '',
+    room_area: '',
+    section: '',
+    sub_section: '',
+    custodian_name: '',
+    custodian_ofc_ext: '',
+    custodian_mobile: '',
+    custodian_email: ''
   });
 
   const handleInputChange = (e) => {
@@ -48,20 +75,18 @@ console.log("ddcfdf");
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
+    setFormData({ ...formData, file_name: e.target.files[0] });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("address", formData.address);
-    formDataToSend.append("phone", formData.phone);
-    formDataToSend.append("file", formData.file);
+  const handleSubmit = async () => {
+
+    // e.preventDefault();
 
     try {
-      const response = await axios.post("/api/contacts", formDataToSend);
-      console.log("Contact created:", response.data.contact);
+      const response = await axios.post("http://localhost/pic_ppm_api/api/Asset", formData,{headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+      console.log("asset create:", response.data);
     } catch (error) {
       console.error("Error creating contact:", error);
     }
@@ -77,46 +102,13 @@ console.log("ddcfdf");
                 <h4> Add new Equipment</h4>
               </div>
               <div >
-                <button className="btn btn-primary me-2"> Save  </button>
+                <button className="btn btn-primary me-2" onClick={()=>{ handleSubmit(); }}> Save  </button>
                 <button className="btn btn-secondary" onClick={()=>{ router.back();}} > Cancel  </button>
 
               </div>
               
             </div>
             <div className="card-body">
-              {/* <form onSubmit={handleSubmit}>
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="address"
-                    placeholder="Address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <input type="file" name="file" onChange={handleFileChange} />
-                </div>
-                <button type="submit">Submit</button>
-              </form> */}
               <div className="row">
                 <div className="col-4">
                   <label className="mt-1 form-label">
@@ -126,6 +118,8 @@ console.log("ddcfdf");
                     name="asset_tech_cat"
                     id=""
                     className="form-control"
+                    value={formData.asset_tech_cat}
+                    onChange={handleInputChange}
                   ></select>
                 </div>
                 <div className="col-4">
@@ -135,6 +129,8 @@ console.log("ddcfdf");
                     placeholder="Name"
                     type="text"
                     className="form-control"
+                    value={formData.equipment_category_name}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -144,6 +140,8 @@ console.log("ddcfdf");
                     placeholder="Equipment Type"
                     type="text"
                     className="form-control"
+                    value={formData.equipment_type}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -153,6 +151,8 @@ console.log("ddcfdf");
                     placeholder="Manufacturer"
                     type="text"
                     className="form-control"
+                    value={formData.manufacturer}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -162,6 +162,8 @@ console.log("ddcfdf");
                     placeholder="Model"
                     type="text"
                     className="form-control"
+                    value={formData.model}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -171,6 +173,8 @@ console.log("ddcfdf");
                     placeholder="Serial number"
                     type="text"
                     className="form-control"
+                    value={formData.serial_number}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -180,6 +184,8 @@ console.log("ddcfdf");
                     placeholder="FA #"
                     type="text"
                     className="form-control"
+                    value={formData.fa_number}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -189,6 +195,8 @@ console.log("ddcfdf");
                     placeholder="Equipment Sequence #"
                     type="text"
                     className="form-control"
+                    value={formData.equipment_seq_number}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -198,6 +206,8 @@ console.log("ddcfdf");
                     placeholder="Manufacture Date"
                     type="date"
                     className="form-control"
+                    value={formData.manufacture_date}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -207,6 +217,8 @@ console.log("ddcfdf");
                     placeholder=" Installation Date"
                     type="date"
                     className="form-control"
+                    value={formData.installation_date}
+                    onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
@@ -215,13 +227,23 @@ console.log("ddcfdf");
                     name="asset_status"
                     id=""
                     className="form-control"
+                    value={formData.asset_status}
+                    onChange={handleInputChange}
                   ></select>
                 </div>
                 <div className="col-4">
                   <label  className="mt-1 forml-label">
                     Vendor
                   </label>
-                  <select name="vendor" id="" className="form-control"></select>
+                  <select name="vendor" id="" className="form-control"
+                    value={formData.vendor}
+                    onChange={handleInputChange}>
+                    { vendors.map((vendor)=>{
+                      return (
+                        <option key={vendor.id} value={vendor.id} >{vendor.vendor_name} </option>
+                      );
+                    }) }
+                  </select>
                 </div>
                 <div className="col-4">
                   <label className="mt-1 form-label"> Manual</label>
@@ -230,6 +252,7 @@ console.log("ddcfdf");
                     placeholder="Attach Manual"
                     type="file"
                     className="form-control"
+                    onChange={handleFileChange}
                   ></input>
                 </div>
               </div>
@@ -246,13 +269,15 @@ console.log("ddcfdf");
                             name="building_block"
                             id=""
                             className="form-control"
+                            value={formData.building_block}
+                            onChange={handleInputChange}
                           >
                             {/* Map over building block data */}
                             {blocks.map((block) => (
                               <option
                                 key={block.id}
                                 value={block.id}
-                                selected={
+                                defaultValue={
                                   asset && asset.building_block === block.id
                                 }
                               >
@@ -263,13 +288,14 @@ console.log("ddcfdf");
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Floor</label>
-                          <select name="floor" id="" className="form-control">
+                          <select name="floor" id="" className="form-control"   value={formData.floor}
+                            onChange={handleInputChange}>
                             {/* Map over floor data */}
-                            {floors.map((floor) => (
+                            {floors && floors.map((floor) => (
                               <option
                                 key={floor.id}
                                 value={floor.id}
-                                selected={asset && asset.floor === floor.id}
+                                defaultValue={asset && asset.floor === floor.id}
                               >
                                 {floor.floor_name}
                               </option>
@@ -282,13 +308,15 @@ console.log("ddcfdf");
                             name="department"
                             id=""
                             className="form-control"
+                            value={formData.department}
+                            onChange={handleInputChange}
                           >
                             {/* Map over department data */}
                             {departments.map((dept) => (
                               <option
                                 key={dept.id}
                                 value={dept.id}
-                                selected={asset && asset.department === dept.id}
+                                defaultValue={asset && asset.department === dept.id}
                               >
                                 {dept.name}
                               </option>
@@ -298,30 +326,33 @@ console.log("ddcfdf");
                         <div className="col-3">
                           <label className="mt-1 form-label">Room/Area</label>
                           <input
-                            value={asset ? asset.room_area : ""}
                             name="room_area"
                             type="text"
                             className="form-control"
+                            value={formData.room_area}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Section</label>
                           <input
-                            value={asset ? asset.section : ""}
                             name="section"
                             placeholder="Section"
                             type="text"
                             className="form-control"
+                            value={formData.section}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Sub Section</label>
                           <input
-                            value={asset ? asset.sub_section : ""}
                             name="sub_section"
                             placeholder="Sub Section"
                             type="text"
                             className="form-control"
+                            value={formData.sub_section}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
@@ -332,11 +363,12 @@ console.log("ddcfdf");
                             Custodian Name
                           </label>
                           <input
-                            value={asset ? asset.custodian_name : ""}
                             name="custodian_name"
                             placeholder="Custodian Name"
                             type="text"
                             className="form-control"
+                            value={formData.custodian_name}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
@@ -344,27 +376,31 @@ console.log("ddcfdf");
                             Office Extention
                           </label>
                           <input
-                            value={asset ? asset.office_extention : ""}
                             name="custodian_ofc_ext"
                             placeholder="Office Extention"
                             type="text"
                             className="form-control"
+                            value={formData.custodian_ofc_ext}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Mobile</label>
                           <input
-                            value={asset ? asset.mobile : ""}
+                          
                             name="custodian_mobile"
                             placeholder="Mobile"
                             type="text"
                             className="form-control"
+                            value={formData.custodian_mobile}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Email</label>
                           <input
-                            value={asset ? asset.email : ""}
+                           value={formData.custodian_email}
+                           onChange={handleInputChange}
                             name="custodian_email"
                             placeholder="Email"
                             type="text"

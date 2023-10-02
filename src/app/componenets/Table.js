@@ -3,25 +3,9 @@ import React from "react";
 import { useState,useEffect } from "react";
 
 export default function Table({columnNames,aliases, tableData}) {
+  
+  // var [data ,setData]  = useState([]);
 
-  //  columnNames = ["id", "name",  "buisnessName", "address"];
-  //  aliases = ["id", "name",  "buisness Name", "address"];
-
-  //  data = [
-  //   {
-  //     id: 1,
-  //     name: "apex",
-  //     buisnessName: "apex Trd",
-  //     address: "university Road",
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "flex",
-  //     buisnessName: "flex Trd",
-  //     address: "university Road",
-  //   },
-  // ];
-  // const [data,setData]= useState(null)
   // useEffect(()=>{
     
   //   if(tableData){
