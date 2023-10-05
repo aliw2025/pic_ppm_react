@@ -93,6 +93,15 @@ const [loading, setLoading] = useState(false);
     setFormData({ ...formData, file_name: e.target.files[0] });
   };
 
+  function handleDelete(id){
+    console.log("delete "+id);
+  }
+  function handleEdit(id) {
+    console.log("edit: "+id);
+  }
+  function handleDetail(id) {
+    console.log("detail: "+id);
+  }
   const handleSubmit = async () => {
 
     // e.preventDefault();

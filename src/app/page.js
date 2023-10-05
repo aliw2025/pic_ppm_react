@@ -214,14 +214,15 @@ export default function Home() {
           </button>
         </div>
         <div className="card-body">
-          <VendorTable
-            onDetail={handleDetail}
+          <Table 
+            columnNames={["id","vendor_name","business_name","address"]}
+            aliases={["id","name","business name","address"]}
+            tableData = {data}
+            onDetails={handleDetail}
             onDelete={onDelete}
             onEdit={onEdit}
-            data={data}
-          >
-            {" "}
-          </VendorTable>
+            >
+          </Table>
         </div>
       </div>
 

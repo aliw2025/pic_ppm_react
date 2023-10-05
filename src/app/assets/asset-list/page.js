@@ -6,6 +6,9 @@ import axios from "axios";
 
 export default function Assets() {
   const [assets, setAssets] = useState(null);
+  const router = useRouter();
+
+
 
   async function getAssets() {
     console.log("one");
@@ -20,11 +23,23 @@ export default function Assets() {
     console.log("two");
   }
 
+
+  function handleDelete(id){
+    console.log("delete "+id);
+  }
+
+  function handleEdit(id) {
+    console.log("edit: "+id);
+    router.push(`assets/add-asset?id=${id}`);
+  }
+
+  function handleDetail(id) {
+    console.log("detail: "+id);
+  }
+
   useEffect(() => {
     getAssets();
   }, []);
-
-  const router = useRouter();
   return (
     <div className="bg-light text-dark ">
       <div className="row">
@@ -42,9 +57,13 @@ export default function Assets() {
             </div>
             <div className="card-body">
               <Table
+
                 columnNames={["id","equipment_category_name","equipment_type","manufacturer", "model", "serial_number"]}
                 aliases={["id","category_name","equipment type","manufacturer","model", "serial_number"]}
                 tableData={assets}
+                onDelete={handleDelete}
+                onDetails={handleDetail}
+                onEdit={handleEdit}
               ></Table>
             </div>
           </div>
