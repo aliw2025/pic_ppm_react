@@ -12,9 +12,7 @@ import { RingLoader } from 'react-spinners';
 
 
 
-
 export default function Assets() {
-console.log("ddcfdf");
 var router = useRouter();
 
 const [loading, setLoading] = useState(false);
@@ -26,7 +24,14 @@ const [loading, setLoading] = useState(false);
   const [blocks,setBlocks] = useState([]);
   const [floors,setFloors] = useState([]);
 
-
+  useEffect(() => {
+    console.log(router) ;
+    // Check if the query object is available and has the 'id' property
+    if (router.query && router.query.id) {
+      const id = router.query.id;
+      console.log('ID:', id); // You can log it or use it as needed
+    }
+  }, [router.query]);
 
   useEffect(()=>{
 
@@ -93,15 +98,7 @@ const [loading, setLoading] = useState(false);
     setFormData({ ...formData, file_name: e.target.files[0] });
   };
 
-  function handleDelete(id){
-    console.log("delete "+id);
-  }
-  function handleEdit(id) {
-    console.log("edit: "+id);
-  }
-  function handleDetail(id) {
-    console.log("detail: "+id);
-  }
+ 
   const handleSubmit = async () => {
 
     // e.preventDefault();

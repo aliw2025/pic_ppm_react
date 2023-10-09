@@ -8,6 +8,7 @@ export default function Assets() {
   const [assets, setAssets] = useState(null);
   const router = useRouter();
 
+ 
 
 
   async function getAssets() {
@@ -29,8 +30,11 @@ export default function Assets() {
   }
 
   function handleEdit(id) {
+
     console.log("edit: "+id);
-    router.push(`assets/add-asset?id=${id}`);
+    router.push('/assets/add-asset?id='+id);
+    // router.push('/assets/add-asset');     
+
   }
 
   function handleDetail(id) {

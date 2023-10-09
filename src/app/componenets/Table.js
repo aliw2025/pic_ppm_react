@@ -1,6 +1,7 @@
 import { data } from "jquery";
 import React from "react";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Table({
   columnNames,
@@ -10,7 +11,6 @@ export default function Table({
   onEdit,
   onDetails,
 }) {
-
   var data = tableData;
 
   return (
@@ -43,7 +43,7 @@ export default function Table({
   );
 }
 
-function TableRow({ rowData, columnNames,onDelete,onEdit,onDetails }) {
+function TableRow({ rowData, columnNames, onDelete, onEdit, onDetails }) {
   return (
     <tr key={rowData.id}>
       {columnNames.map((column, colIndex) => (
@@ -53,10 +53,18 @@ function TableRow({ rowData, columnNames,onDelete,onEdit,onDetails }) {
         <i
           className="fa fa-eye mx-2"
           onClick={() => {
-           
             onDetails(rowData.id);
           }}
         ></i>
+        {/* <Link
+          href={{
+            pathname: `/assets/add-asset/` ,
+            query: { id: 5 },
+          }}
+        >
+          {" "}
+          <i className="fa fa-edit mx-2"></i>
+        </Link> */}
         <i
           className="fa fa-edit mx-2"
           onClick={() => {
@@ -66,7 +74,7 @@ function TableRow({ rowData, columnNames,onDelete,onEdit,onDetails }) {
         <i
           className="fa fa-trash mx-2"
           onClick={() => {
-           onDelete(rowData.id);
+            onDelete(rowData.id);
           }}
         ></i>
       </td>
@@ -74,12 +82,12 @@ function TableRow({ rowData, columnNames,onDelete,onEdit,onDetails }) {
   );
 }
 
-  // var [data ,setData]  = useState([]);
-  // useEffect(()=>{
+// var [data ,setData]  = useState([]);
+// useEffect(()=>{
 
-  //   if(tableData){
-  //     console.log("this is props data");
-  //     console.log(tableData);
-  //     setData(tableData);
-  //   }
-  // },[tableData]);
+//   if(tableData){
+//     console.log("this is props data");
+//     console.log(tableData);
+//     setData(tableData);
+//   }
+// },[tableData]);
