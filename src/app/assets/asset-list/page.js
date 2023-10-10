@@ -33,6 +33,7 @@ export default function Assets() {
 
     console.log("edit: "+id);
     router.push('/assets/add-asset?id='+id);
+    
     // router.push('/assets/add-asset');     
 
   }

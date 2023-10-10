@@ -2,91 +2,101 @@
 import react, { useEffect } from "react";
 import Table from "../../componenets/Table";
 import { useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { data } from "jquery";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-import { RingLoader } from 'react-spinners';
-
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { RingLoader } from "react-spinners";
+import { useSearchParams } from "next/navigation";
+import { userAgent } from "next/server";
 
 export default function Assets() {
-var router = useRouter();
+  var router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  console.log("id: " + id);
+  var reqData = {id:id};
+  useEffect(()=>{
 
-const [loading, setLoading] = useState(false);
+    function getAsset(){
+      axios.get("http://localhost/pic_ppm_api/api/Asset/"+id)
+      .then((response)=>{
+        console.log("got the asset");
+        console.log(response.data);
+        setFormData(response.data);
+
+      }).catch((error)=>{
+
+        console.log(error);
+      })
+
+    }
+    getAsset();
+
+  },[id]);
+
+
+  const [loading, setLoading] = useState(false);
 
   var asset = [];
   var assets = [];
-  const[departments,setDepartments]  = useState([]);
-  const[vendors,setVendors] = useState([]);
-  const [blocks,setBlocks] = useState([]);
-  const [floors,setFloors] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const [blocks, setBlocks] = useState([]);
+  const [floors, setFloors] = useState([]);
 
   useEffect(() => {
-    console.log(router) ;
-    // Check if the query object is available and has the 'id' property
-    if (router.query && router.query.id) {
-      const id = router.query.id;
-      console.log('ID:', id); // You can log it or use it as needed
-    }
-  }, [router.query]);
-
-  useEffect(()=>{
-
-    function getFormData(){
+    function getFormData() {
       setLoading(true); // Set loading to true when starting the request
 
-        axios.get("http://localhost/pic_ppm_api/api/Asset/create")
-      .then((response)=>{
-        console.log("this is reponse"+response);
-        console.log(response.data);
-        setFloors(response.data.floors);       
-        setDepartments(response.data.departments); 
-        setVendors(response.data.vendors);
-        setBlocks(response.data.blocks);
-        console.log(departments);
-      }).catch((error)=>{
-        console.log(error);
-      }).finally(()=>{
-        setLoading(false); // Set loading to true when starting the request
-
-      })
-
-      
+      axios
+        .get("http://localhost/pic_ppm_api/api/Asset/create")
+        .then((response) => {
+          console.log("this is reponse");
+          console.log(response.data);
+          setFloors(response.data.floors);
+          setDepartments(response.data.departments);
+          setVendors(response.data.vendors);
+          setBlocks(response.data.blocks);
+          console.log(departments);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false); // Set loading to true when starting the request
+        });
     }
 
     getFormData();
-
-  },[])
-
-  
+  }, []);
 
   const [formData, setFormData] = useState({
-    asset_tech_cat: '',
-    equipment_category_name: '',
-    equipment_type: '',
-    manufacturer: '',
-    model: '',
-    serial_number: '',
-    fa_number: '',
-    equipment_seq_number: '',
-    manufacture_date: '',
-    installation_date: '',
-    asset_status: '',
-    vendor: '',
-    file_name: '',
-    building_block: '',
-    floor: '',
-    department: '',
-    room_area: '',
-    section: '',
-    sub_section: '',
-    custodian_name: '',
-    custodian_ofc_ext: '',
-    custodian_mobile: '',
-    custodian_email: ''
+    asset_tech_cat: "",
+    equipment_category_name: "",
+    equipment_type: "",
+    manufacturer: "",
+    model: "",
+    serial_number: "",
+    fa_number: "",
+    equipment_seq_number: "",
+    manufacture_date: "",
+    installation_date: "",
+    asset_status: "",
+    vendor: "",
+    file_name: "",
+    building_block: "",
+    floor: "",
+    department: "",
+    room_area: "",
+    section: "",
+    sub_section: "",
+    custodian_name: "",
+    custodian_ofc_ext: "",
+    custodian_mobile: "",
+    custodian_email: "",
   });
 
   const handleInputChange = (e) => {
@@ -98,28 +108,38 @@ const [loading, setLoading] = useState(false);
     setFormData({ ...formData, file_name: e.target.files[0] });
   };
 
- 
   const handleSubmit = async () => {
 
-    // e.preventDefault();
-
     try {
-      const response = await axios.post("http://localhost/pic_ppm_api/api/Asset", formData,{headers: {
-        'Content-Type': 'multipart/form-data'
-      }});
+      const response = await axios.post(
+        "http://localhost/pic_ppm_api/api/Asset",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log("asset create:", response.data);
-      toast.success('Record Saved');
+      toast.success("Record Saved");
     } catch (error) {
       console.error("Error creating contact:", error);
-    }finally {
-
+    } finally {
       setLoading(false); // Set loading to true when starting the request
-
     }
   };
+  console.log("formData");
+  console.log(formData);
   return (
     <div className="bg-light text-dark ">
-            {loading && <RingLoader className="spinner" size={150} color={'#36D7B7'} loading={loading} />}
+      {loading && (
+        <RingLoader
+          className="spinner"
+          size={150}
+          color={"#36D7B7"}
+          loading={loading}
+        />
+      )}
 
       <div className="row">
         <link href="/"></link>
@@ -129,11 +149,26 @@ const [loading, setLoading] = useState(false);
               <div>
                 <h4> Add new Equipment</h4>
               </div>
-              <div >
-                <button className="btn btn-primary me-2" onClick={()=>{ handleSubmit(); }}> Save  </button>
-                <button className="btn btn-secondary" onClick={()=>{ router.back();}} > Cancel  </button>
+              <div>
+                <button
+                  className="btn btn-primary me-2"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  {" "}
+                  Save{" "}
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  {" "}
+                  Cancel{" "}
+                </button>
               </div>
-              
             </div>
             <div className="card-body">
               <div className="row">
@@ -145,18 +180,20 @@ const [loading, setLoading] = useState(false);
                     name="asset_tech_cat"
                     id=""
                     className="form-control"
-                    value={formData.asset_tech_cat}
+                    value={formData.asset_tech_cat??""}
                     onChange={handleInputChange}
                   ></select>
                 </div>
                 <div className="col-4">
-                  <label className="mt-1 form-label">Equipment Category Name</label>
+                  <label className="mt-1 form-label">
+                    Equipment Category Name
+                  </label>
                   <input
                     name="equipment_category_name"
                     placeholder="Name"
                     type="text"
                     className="form-control"
-                    value={formData.equipment_category_name}
+                    value={formData.equipment_category_name??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -167,7 +204,7 @@ const [loading, setLoading] = useState(false);
                     placeholder="Equipment Type"
                     type="text"
                     className="form-control"
-                    value={formData.equipment_type}
+                    value={formData.equipment_type??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -178,7 +215,7 @@ const [loading, setLoading] = useState(false);
                     placeholder="Manufacturer"
                     type="text"
                     className="form-control"
-                    value={formData.manufacturer}
+                    value={formData.manufacturer??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -189,7 +226,7 @@ const [loading, setLoading] = useState(false);
                     placeholder="Model"
                     type="text"
                     className="form-control"
-                    value={formData.model}
+                    value={formData.model!=null?formData.model:"dd"}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -200,7 +237,7 @@ const [loading, setLoading] = useState(false);
                     placeholder="Serial number"
                     type="text"
                     className="form-control"
-                    value={formData.serial_number}
+                    value={formData.serial_number??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -211,18 +248,20 @@ const [loading, setLoading] = useState(false);
                     placeholder="FA #"
                     type="text"
                     className="form-control"
-                    value={formData.fa_number}
+                    value={formData.fa_number??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
                 <div className="col-4">
-                  <label className="mt-1 form-label">Equipment Sequence #</label>
+                  <label className="mt-1 form-label">
+                    Equipment Sequence #
+                  </label>
                   <input
                     name="equipment_seq_number"
                     placeholder="Equipment Sequence #"
                     type="text"
                     className="form-control"
-                    value={formData.equipment_seq_number}
+                    value={formData.equipment_seq_number??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -233,7 +272,7 @@ const [loading, setLoading] = useState(false);
                     placeholder="Manufacture Date"
                     type="date"
                     className="form-control"
-                    value={formData.manufacture_date}
+                    value={formData.manufacture_date??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -244,7 +283,7 @@ const [loading, setLoading] = useState(false);
                     placeholder=" Installation Date"
                     type="date"
                     className="form-control"
-                    value={formData.installation_date}
+                    value={formData.installation_date??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -254,22 +293,26 @@ const [loading, setLoading] = useState(false);
                     name="asset_status"
                     id=""
                     className="form-control"
-                    value={formData.asset_status}
+                    value={formData.asset_status??""}
                     onChange={handleInputChange}
                   ></select>
                 </div>
                 <div className="col-4">
-                  <label  className="mt-1 forml-label">
-                    Vendor
-                  </label>
-                  <select name="vendor" id="" className="form-control"
-                    value={formData.vendor}
-                    onChange={handleInputChange}>
-                    { vendors.map((vendor)=>{
+                  <label className="mt-1 forml-label">Vendor</label>
+                  <select
+                    name="vendor"
+                    id=""
+                    className="form-control"
+                    value={formData.vendor??""}
+                    onChange={handleInputChange}
+                  >
+                    {vendors.map((vendor) => {
                       return (
-                        <option key={vendor.id} value={vendor.id} >{vendor.vendor_name} </option>
+                        <option key={vendor.id} value={vendor.id}>
+                          {vendor.vendor_name}{" "}
+                        </option>
                       );
-                    }) }
+                    })}
                   </select>
                 </div>
                 <div className="col-4">
@@ -296,7 +339,7 @@ const [loading, setLoading] = useState(false);
                             name="building_block"
                             id=""
                             className="form-control"
-                            value={formData.building_block}
+                            value={formData.building_block??""}
                             onChange={handleInputChange}
                           >
                             {/* Map over building block data */}
@@ -315,18 +358,26 @@ const [loading, setLoading] = useState(false);
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Floor</label>
-                          <select name="floor" id="" className="form-control"   value={formData.floor}
-                            onChange={handleInputChange}>
+                          <select
+                            name="floor"
+                            id=""
+                            className="form-control"
+                            value={formData.floor??""}
+                            onChange={handleInputChange}
+                          >
                             {/* Map over floor data */}
-                            {floors && floors.map((floor) => (
-                              <option
-                                key={floor.id}
-                                value={floor.id}
-                                defaultValue={asset && asset.floor === floor.id}
-                              >
-                                {floor.floor_name}
-                              </option>
-                            ))}
+                            {floors &&
+                              floors.map((floor) => (
+                                <option
+                                  key={floor.id}
+                                  value={floor.id}
+                                  defaultValue={
+                                    asset && asset.floor === floor.id
+                                  }
+                                >
+                                  {floor.floor_name}
+                                </option>
+                              ))}
                           </select>
                         </div>
                         <div className="col-3">
@@ -335,7 +386,7 @@ const [loading, setLoading] = useState(false);
                             name="department"
                             id=""
                             className="form-control"
-                            value={formData.department}
+                            value={formData.department??""}
                             onChange={handleInputChange}
                           >
                             {/* Map over department data */}
@@ -343,7 +394,9 @@ const [loading, setLoading] = useState(false);
                               <option
                                 key={dept.id}
                                 value={dept.id}
-                                defaultValue={asset && asset.department === dept.id}
+                                defaultValue={
+                                  asset && asset.department === dept.id
+                                }
                               >
                                 {dept.name}
                               </option>
@@ -356,7 +409,7 @@ const [loading, setLoading] = useState(false);
                             name="room_area"
                             type="text"
                             className="form-control"
-                            value={formData.room_area}
+                            value={formData.room_area??""}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -367,7 +420,7 @@ const [loading, setLoading] = useState(false);
                             placeholder="Section"
                             type="text"
                             className="form-control"
-                            value={formData.section}
+                            value={formData.section??""}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -378,7 +431,7 @@ const [loading, setLoading] = useState(false);
                             placeholder="Sub Section"
                             type="text"
                             className="form-control"
-                            value={formData.sub_section}
+                            value={formData.sub_section??""}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -394,7 +447,7 @@ const [loading, setLoading] = useState(false);
                             placeholder="Custodian Name"
                             type="text"
                             className="form-control"
-                            value={formData.custodian_name}
+                            value={formData.custodian_name??""}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -407,27 +460,26 @@ const [loading, setLoading] = useState(false);
                             placeholder="Office Extention"
                             type="text"
                             className="form-control"
-                            value={formData.custodian_ofc_ext}
+                            value={formData.custodian_ofc_ext??""}
                             onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Mobile</label>
                           <input
-                          
                             name="custodian_mobile"
                             placeholder="Mobile"
                             type="text"
                             className="form-control"
-                            value={formData.custodian_mobile}
+                            value={formData.custodian_mobile??""}
                             onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Email</label>
                           <input
-                           value={formData.custodian_email}
-                           onChange={handleInputChange}
+                            value={formData.custodian_email??""}
+                            onChange={handleInputChange}
                             name="custodian_email"
                             placeholder="Email"
                             type="text"
