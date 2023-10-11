@@ -74,6 +74,7 @@ export default function Assets() {
   }, []);
 
   const [formData, setFormData] = useState({
+    id:"",
     asset_tech_cat: "",
     equipment_category_name: "",
     equipment_type: "",
@@ -129,6 +130,24 @@ export default function Assets() {
     }
   };
 
+  const handleUpdate = async () => {
+    
+    try {
+      const response = await axios.put(
+        "http://localhost/pic_ppm_api/api/Asset/"+id,
+        formData,
+        
+      );
+      console.log("asset updated :", response.data);
+      toast.success("Record update");
+    } catch (error) {
+      toast.failure(error);
+    } finally {
+      setLoading(false); // Set loading to true when starting the request
+    } 
+  };
+// console.log("testing id");
+// console.log(formData);
   return (
     <div className="bg-light text-dark ">
       {loading && (
@@ -159,7 +178,7 @@ export default function Assets() {
                 </button>):(<button
                   className="btn btn-primary me-2"
                   onClick={() => {
-                    handleSubmit();
+                    handleUpdate();
                   }}
                 >
                   update
@@ -327,7 +346,7 @@ export default function Assets() {
                     name="file_name"
                     placeholder="Attach Manual"
                     type="file"
-                    value={formData.file_name??""}
+                  
                     className="form-control"
                     onChange={handleFileChange}
                   ></input>
