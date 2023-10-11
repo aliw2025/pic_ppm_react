@@ -17,7 +17,7 @@ export default function Assets() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   console.log("id: " + id);
-  var reqData = {id:id};
+
   useEffect(()=>{
 
     function getAsset(){
@@ -25,7 +25,7 @@ export default function Assets() {
       .then((response)=>{
         console.log("got the asset");
         console.log(response.data);
-        setFormData(response.data);
+        setFormData(response.data.data);
 
       }).catch((error)=>{
 
@@ -128,8 +128,7 @@ export default function Assets() {
       setLoading(false); // Set loading to true when starting the request
     }
   };
-  console.log("formData");
-  console.log(formData);
+
   return (
     <div className="bg-light text-dark ">
       {loading && (
@@ -150,15 +149,22 @@ export default function Assets() {
                 <h4> Add new Equipment</h4>
               </div>
               <div>
-                <button
+                {id==null?(<button
                   className="btn btn-primary me-2"
                   onClick={() => {
                     handleSubmit();
                   }}
                 >
-                  {" "}
-                  Save{" "}
-                </button>
+                  Save
+                </button>):(<button
+                  className="btn btn-primary me-2"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  update
+                </button>) }
+                
                 <button
                   className="btn btn-secondary"
                   onClick={() => {
@@ -226,7 +232,7 @@ export default function Assets() {
                     placeholder="Model"
                     type="text"
                     className="form-control"
-                    value={formData.model!=null?formData.model:"dd"}
+                    value={formData.model??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -321,6 +327,7 @@ export default function Assets() {
                     name="file_name"
                     placeholder="Attach Manual"
                     type="file"
+                    value={formData.file_name??""}
                     className="form-control"
                     onChange={handleFileChange}
                   ></input>
