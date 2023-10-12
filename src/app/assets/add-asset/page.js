@@ -75,17 +75,17 @@ export default function Assets() {
 
   const [formData, setFormData] = useState({
     id:"",
-    asset_tech_cat: "",
+    asset_technical_category: "",
     equipment_category_name: "",
     equipment_type: "",
     manufacturer: "",
     model: "",
     serial_number: "",
     fa_number: "",
-    equipment_seq_number: "",
+    equipment_sequence_number: "",
     manufacture_date: "",
     installation_date: "",
-    asset_status: "",
+    equipment_status: "",
     vendor: "",
     file_name: "",
     building_block: "",
@@ -95,9 +95,9 @@ export default function Assets() {
     section: "",
     sub_section: "",
     custodian_name: "",
-    custodian_ofc_ext: "",
-    custodian_mobile: "",
-    custodian_email: "",
+    office_extention: "",
+    mobile: "",
+    email: "",
   });
 
   const handleInputChange = (e) => {
@@ -136,6 +136,7 @@ export default function Assets() {
       const response = await axios.put(
         "http://localhost/pic_ppm_api/api/Asset/"+id,
         formData,
+        
         
       );
       console.log("asset updated :", response.data);
@@ -202,10 +203,10 @@ export default function Assets() {
                     Asset Technical Category{" "}
                   </label>
                   <select
-                    name="asset_tech_cat"
+                    name="asset_technical_category"
                     id=""
                     className="form-control"
-                    value={formData.asset_tech_cat??""}
+                    value={formData.asset_technical_category??""}
                     onChange={handleInputChange}
                   ></select>
                 </div>
@@ -282,11 +283,11 @@ export default function Assets() {
                     Equipment Sequence #
                   </label>
                   <input
-                    name="equipment_seq_number"
+                    name="equipment_sequence_number"
                     placeholder="Equipment Sequence #"
                     type="text"
                     className="form-control"
-                    value={formData.equipment_seq_number??""}
+                    value={formData.equipment_sequence_number??""}
                     onChange={handleInputChange}
                   ></input>
                 </div>
@@ -315,10 +316,10 @@ export default function Assets() {
                 <div className="col-4">
                   <label className="mt-1 form-label"> Status</label>
                   <select
-                    name="asset_status"
+                    name="equipment_status"
                     id=""
                     className="form-control"
-                    value={formData.asset_status??""}
+                    value={formData.equipment_status??""}
                     onChange={handleInputChange}
                   ></select>
                 </div>
@@ -346,7 +347,6 @@ export default function Assets() {
                     name="file_name"
                     placeholder="Attach Manual"
                     type="file"
-                  
                     className="form-control"
                     onChange={handleFileChange}
                   ></input>
@@ -482,31 +482,31 @@ export default function Assets() {
                             Office Extention
                           </label>
                           <input
-                            name="custodian_ofc_ext"
+                            name="office_extention"
                             placeholder="Office Extention"
                             type="text"
                             className="form-control"
-                            value={formData.custodian_ofc_ext??""}
+                            value={formData.office_extention??""}
                             onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Mobile</label>
                           <input
-                            name="custodian_mobile"
+                            name="mobile"
                             placeholder="Mobile"
                             type="text"
                             className="form-control"
-                            value={formData.custodian_mobile??""}
+                            value={formData.mobile??""}
                             onChange={handleInputChange}
                           />
                         </div>
                         <div className="col-3">
                           <label className="mt-1 form-label">Email</label>
                           <input
-                            value={formData.custodian_email??""}
+                            value={formData.email??""}
                             onChange={handleInputChange}
-                            name="custodian_email"
+                            name="email"
                             placeholder="Email"
                             type="text"
                             className="form-control"
