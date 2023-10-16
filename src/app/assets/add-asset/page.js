@@ -131,18 +131,25 @@ export default function Assets() {
   };
 
   const handleUpdate = async () => {
-    
+    const formData1 = new FormData();
+formData1.append('json', JSON.stringify(formData1));  // Add JSON data
+// formData1.append('file', file)
     try {
       const response = await axios.put(
         "http://localhost/pic_ppm_api/api/Asset/"+id,
         formData,
-        
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
         
       );
       console.log("asset updated :", response.data);
       toast.success("Record update");
     } catch (error) {
-      toast.failure(error);
+      console.log(error);
+      // toast.failed(error);
     } finally {
       setLoading(false); // Set loading to true when starting the request
     } 
