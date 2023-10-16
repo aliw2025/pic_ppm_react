@@ -131,12 +131,10 @@ export default function Assets() {
   };
 
   const handleUpdate = async () => {
-    const formData1 = new FormData();
-formData1.append('json', JSON.stringify(formData1));  // Add JSON data
-// formData1.append('file', file)
+ 
     try {
-      const response = await axios.put(
-        "http://localhost/pic_ppm_api/api/Asset/"+id,
+      const response = await axios.post(
+        "http://localhost/pic_ppm_api/api/Asset/update"+id,
         formData,
         {
           headers: {
