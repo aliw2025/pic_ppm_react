@@ -26,11 +26,14 @@ console.log(pathname==='/about'?"active":"");
         <Link  className={"nav-link text-light "+(pathname=='/'?"active":"")}  href="/">Vendors</Link>
         </li>
 
-        <li className="nav-item">    
+        {/* <li className="nav-item">    
             <Link  className={"nav-link text-light "+(pathname=='/about'?"active":"")}  href="/about">About</Link>
-        </li>
+        </li> */}
         <li className="nav-item">    
           <Link className={"nav-link text-light " + (pathname.startsWith('/assets') ? "active" : "")} href="/assets/asset-list">Assets</Link>
+        </li>
+          <li className="nav-item">    
+            <Link  className={"nav-link text-light "+(pathname.startsWith('/work-order') ? "active" : "")} href="/work-order/work-order-list">Work orders</Link>
         </li>
        
         
