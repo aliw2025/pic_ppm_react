@@ -152,8 +152,8 @@ export default function Assets() {
       setLoading(false); // Set loading to true when starting the request
     } 
   };
-// console.log("testing id");
-// console.log(formData);
+console.log("testing id");
+console.log(formData);
   return (
     <div className="bg-light text-dark ">
       {loading && (
@@ -213,7 +213,19 @@ export default function Assets() {
                     className="form-control"
                     value={formData.asset_technical_category??""}
                     onChange={handleInputChange}
-                  ></select>
+                  >
+                    {/* Map over department data */}
+                    {departments.map((dept) => (
+                              <option
+                                key={dept.id}
+                                value={dept.id}
+          
+                              >
+                                {dept.name}
+                              </option>
+                            ))}
+                  </select>
+                  
                 </div>
                 <div className="col-4">
                   <label className="mt-1 form-label">
@@ -402,9 +414,9 @@ export default function Assets() {
                                 <option
                                   key={floor.id}
                                   value={floor.id}
-                                  defaultValue={
-                                    asset && asset.floor === floor.id
-                                  }
+                                  // defaultValue={
+                                  //   asset && asset.floor === floor.id
+                                  // }
                                 >
                                   {floor.floor_name}
                                 </option>
