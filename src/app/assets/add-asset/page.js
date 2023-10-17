@@ -46,6 +46,9 @@ export default function Assets() {
   const [vendors, setVendors] = useState([]);
   const [blocks, setBlocks] = useState([]);
   const [floors, setFloors] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+
+
 
   useEffect(() => {
     function getFormData() {
@@ -60,6 +63,7 @@ export default function Assets() {
           setDepartments(response.data.departments);
           setVendors(response.data.vendors);
           setBlocks(response.data.blocks);
+          setStatuses(response.data.eq_status);
           console.log(departments);
         })
         .catch((error) => {
@@ -338,7 +342,15 @@ console.log(formData);
                     className="form-control"
                     value={formData.equipment_status??""}
                     onChange={handleInputChange}
-                  ></select>
+                  >
+                   {statuses.map((status) => {
+                      return (
+                        <option key={status.id} value={status.id}>
+                          {status.equipment_status_name}{" "}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
                 <div className="col-4">
                   <label className="mt-1 forml-label">Vendor</label>

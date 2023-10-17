@@ -3,13 +3,32 @@ import react, { useEffect, useState } from "react";
 import Table from "../../componenets/Table";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 export default function Assets() {
   const [assets, setAssets] = useState(null);
   const router = useRouter();
 
  
+  function  deleteAsset(id) {
+    
+    axios.delete("http://localhost/pic_ppm_api/api/Asset/"+id)
+    .then((response)=>{
 
+        toast.success("Asset deleted");  
+       console.log("deleted");
+       console.log(response);
+       getAssets();
+    })
+    .catch((error)=>{ 
+      console.log(error);
+    })
+  }
 
   async function getAssets() {
     console.log("one");
@@ -27,6 +46,23 @@ export default function Assets() {
 
   function handleDelete(id){
     console.log("delete "+id);
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => deleteAsset(id)
+        },
+        {
+          label: 'No',
+          
+        }
+      ]
+    });
+    // deleteAsset(id);
+
+
   }
 
   function handleEdit(id) {
@@ -74,6 +110,7 @@ export default function Assets() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
