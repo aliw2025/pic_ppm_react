@@ -23,12 +23,12 @@ export default function WorkOrder() {
  
 
   function getDepartmentAssets(id){
-    console.log("getting assets: "+id);
+   
     setLoading(true); // Set loading to true when starting the request
     axios.get("http://localhost/pic_ppm_api/api/Asset/get-dept-assets?id="+id)
     .then((response)=>{
 
-      console.log(response);
+     
       setAssets(response.data);
     }).catch((error)=>{
 
@@ -47,29 +47,29 @@ export default function WorkOrder() {
   const [departments,setDepartments]= useState(null);
   const [assets,setAssets] = useState(null);
   const [technicians,setTechnicians] = useState(null);
+  const [serviceCategories,setServiceCategories] = useState(null);
 
 
 
+//  assign service categories 
+  function getDepartmentCategories(id){
+    console.log("getting department categories: "+id);
+    setLoading(true); // Set loading to true when starting the request
+    axios.get("http://localhost/pic_ppm_api/api/ServiceCategory/service-categories?id="+id)
+    .then((response)=>{
+      console.log(response);
+      setAssets(response.data);
+
+    }).catch((error)=>{
+
+        console.log(error);
+    })
+    .finally(()=>{
+      setLoading(false);
+    })
+  }
   useEffect(() => {
 
-    
-
-    function getDepartmentCategories(id){
-
-      setLoading(true); // Set loading to true when starting the request
-      axios.get("http://localhost/pic_ppm_api/Cate/get-dept-assets?id="+id)
-      .then((response)=>{
-        console.log(response);
-        setAssets(response.data);
-
-      }).catch((error)=>{
-
-          console.log(error);
-      })
-      .finally(()=>{
-        setLoading(false);
-      })
-    }
 
     function getFormData() {
       setLoading(true); // Set loading to true when starting the request
@@ -260,6 +260,7 @@ export default function WorkOrder() {
                     className="form-control"
                     value={formData.department}
                     onChange={(e)=>{
+                      getDepartmentCategories(e.target.value);
                       getDepartmentAssets(e.target.value);
                       handleInputChange(e);
                      
