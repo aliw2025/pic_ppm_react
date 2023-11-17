@@ -449,9 +449,7 @@ console.log(formData);
                               <option
                                 key={dept.id}
                                 value={dept.id}
-                                defaultValue={
-                                  asset && asset.department === dept.id
-                                }
+                               
                               >
                                 {dept.name}
                               </option>

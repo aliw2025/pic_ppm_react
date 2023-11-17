@@ -12,27 +12,32 @@ import { RingLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { userAgent } from "next/server";
 
+import textEditor from "@/app/componenets/textEditor";
+
 export default function WorkOrder() {
   var router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  console.log("id: " + id);
+  
 
-  useEffect(() => {
-    function getAsset() {
-      axios
-        .get("http://localhost/pic_ppm_api/api/WorkOrder/" + id)
-        .then((response) => {
-          console.log("got the asset");
-          console.log(response.data);
-          setFormData(response.data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    getAsset();
-  }, [id]);
+ 
+
+  function getDepartmentAssets(id){
+    console.log("getting assets: "+id);
+    setLoading(true); // Set loading to true when starting the request
+    axios.get("http://localhost/pic_ppm_api/api/Asset/get-dept-assets?id="+id)
+    .then((response)=>{
+
+      console.log(response);
+      setAssets(response.data);
+    }).catch((error)=>{
+
+        console.log(error);
+    })
+    .finally(()=>{
+      setLoading(false);
+    })
+  }
 
   const [loading, setLoading] = useState(false);
   const [requestTypes, setRequestTypes] = useState(null);
@@ -46,6 +51,26 @@ export default function WorkOrder() {
 
 
   useEffect(() => {
+
+    
+
+    function getDepartmentCategories(id){
+
+      setLoading(true); // Set loading to true when starting the request
+      axios.get("http://localhost/pic_ppm_api/Cate/get-dept-assets?id="+id)
+      .then((response)=>{
+        console.log(response);
+        setAssets(response.data);
+
+      }).catch((error)=>{
+
+          console.log(error);
+      })
+      .finally(()=>{
+        setLoading(false);
+      })
+    }
+
     function getFormData() {
       setLoading(true); // Set loading to true when starting the request
 
@@ -54,9 +79,16 @@ export default function WorkOrder() {
         .then((response) => {
           console.log("this is reponse");
           console.log(response.data);
+          // setAssets(response.data.assets);
+          setDepartments(response.data.departments);
+          setRequestTypes(response.data.requestTypes);
+          setPriorities(response.data.priorities);
+          setVendors(response.data.vendors);
+         
           //  setFloors(response.data.floors);
         })
         .catch((error) => {
+          console.log("this is error");
           console.log(error);
         })
         .finally(() => {
@@ -65,8 +97,37 @@ export default function WorkOrder() {
     }
 
     getFormData();
+    //getDepartmentAssets();
+    
+    
   }, []);
 
+  // const [formData, setFormData] = useState({
+  //   id:"",
+  //   asset_technical_category: "",
+  //   equipment_category_name: "",
+  //   equipment_type: "",
+  //   manufacturer: "",
+  //   model: "",
+  //   serial_number: "",
+  //   fa_number: "",
+  //   equipment_sequence_number: "",
+  //   manufacture_date: "",
+  //   installation_date: "",
+  //   equipment_status: "",
+  //   vendor: "",
+  //   file_name: "",
+  //   building_block: "",
+  //   floor: "",
+  //   department: "",
+  //   room_area: "",
+  //   section: "",
+  //   sub_section: "",
+  //   custodian_name: "",
+  //   office_extention: "",
+  //   mobile: "",
+  //   email: "",
+  // });
   const [formData, setFormData] = useState({});
 
   const handleInputChange = (e) => {
@@ -118,8 +179,9 @@ export default function WorkOrder() {
       setLoading(false); // Set loading to true when starting the request
     }
   };
-  console.log("testing id");
-  console.log(formData);
+ 
+
+
   return (
     <div className="bg-light text-dark ">
       {loading && (
@@ -176,10 +238,10 @@ export default function WorkOrder() {
                 <div className="col-4">
                   <label className="mt-1 form-label">Request Type</label>
                   <select
-                    name="request-type"
+                    name="request_type"
                     id=""
                     className="form-control"
-                    value={""}
+                    value={formData.request_type}
                     onChange={handleInputChange}
                   >
                     {/* Map over department data */}
@@ -195,10 +257,13 @@ export default function WorkOrder() {
                   <label className="mt-1 form-label">department</label>
                   <select
                     name="department"
-                    id=""
                     className="form-control"
-                    value={""}
-                    onChange={handleInputChange}
+                    value={formData.department}
+                    onChange={(e)=>{
+                      getDepartmentAssets(e.target.value);
+                      handleInputChange(e);
+                     
+                    }}
                   >
                     {/* Map over department data */}
                     {departments &&
@@ -260,7 +325,7 @@ export default function WorkOrder() {
                       assets.map((asset) => {
                         return (
                           <option key={asset.id} value={asset.id}>
-                            {asset.name}{" "}
+                            {asset.equipment_category_name}{" "}
                           </option>
                         );
                       })}
@@ -318,6 +383,9 @@ export default function WorkOrder() {
                       );
                     })}
                   </select>
+                </div>
+                <div className="col-12" id={"edit1"}>
+                <textEditor></textEditor>
                 </div>
               </div>
             </div>
